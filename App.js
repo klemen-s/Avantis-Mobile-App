@@ -18,11 +18,17 @@ function HomeScreen({ navigation }) {
         justifyContent: "center",
       }}
     >
-      <NavigationButton navigation={navigation} navigateTo="Men" text="Men" />
       <NavigationButton
         navigation={navigation}
-        navigateTo="Women"
+        navigateTo="Products"
+        text="Men"
+        gender="male"
+      />
+      <NavigationButton
+        navigation={navigation}
+        navigateTo="Products"
         text="Women"
+        gender="woman"
       />
       <NavigationButton navigation={navigation} navigateTo="Cart" text="Cart" />
       <NavigationButton
@@ -44,9 +50,89 @@ function HomeScreen({ navigation }) {
   );
 }
 
-function Men({ route }) {
-  const [products, setProducts] = useState([]);
+// function Men({ route }) {
+//   const [products, setProducts] = useState([]);
+//   const url = process.env.EXPO_PUBLIC_API_URL;
+
+//   useEffect(() => {
+//     function fetchProducts(gender) {
+//       axios({
+//         url: url + "get-products",
+//         params: { gender: gender },
+//       })
+//         .then((res) => {
+//           setProducts(res.data.products);
+//         })
+//         .catch((err) => console.log(err));
+//     }
+//     fetchProducts("male");
+//   }, []);
+
+//   return (
+//     <View style={{ height: "100%", width: "100%" }}>
+//       <FlatList
+//         data={products}
+//         renderItem={({ item: product }) => (
+//           <Product
+//             productName={product.name}
+//             imageUrl={product.imageUrl}
+//             price={product.price}
+//             id={product._id}
+//           />
+//         )}
+//       />
+//     </View>
+//   );
+// }
+
+// function Women({ route }) {
+//   const url = process.env.EXPO_PUBLIC_API_URL;
+
+//   const [products, setProducts] = useState([]);
+
+//   useEffect(() => {
+//     function fetchProducts(gender) {
+//       axios({
+//         url: url + "get-products",
+//         params: { gender: gender },
+//       })
+//         .then((res) => {
+//           setProducts(res.data.products);
+//         })
+//         .catch((err) => console.log(err));
+//     }
+//     fetchProducts("woman");
+//   }, []);
+
+//   return (
+//     <View style={{ height: "100%", width: "100%" }}>
+//       <FlatList
+//         data={products}
+//         renderItem={({ item: product }) => (
+//           <Product
+//             productName={product.name}
+//             imageUrl={product.imageUrl}
+//             price={product.price}
+//             id={product._id}
+//           />
+//         )}
+//       />
+//     </View>
+//   );
+// }
+
+function Products({ route, navigation }) {
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="ProductDetails" component={ProductDetails} />
+    </Stack.Navigator>
+  </NavigationContainer>;
+
+  const { gender } = route.params;
+
   const url = process.env.EXPO_PUBLIC_API_URL;
+
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     function fetchProducts(gender) {
@@ -59,7 +145,7 @@ function Men({ route }) {
         })
         .catch((err) => console.log(err));
     }
-    fetchProducts("male");
+    fetchProducts(gender);
   }, []);
 
   return (
@@ -72,6 +158,7 @@ function Men({ route }) {
             imageUrl={product.imageUrl}
             price={product.price}
             id={product._id}
+            navigation={navigation}
           />
         )}
       />
@@ -79,38 +166,12 @@ function Men({ route }) {
   );
 }
 
-function Women({ route }) {
-  const url = process.env.EXPO_PUBLIC_API_URL;
-
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    function fetchProducts(gender) {
-      axios({
-        url: url + "get-products",
-        params: { gender: gender },
-      })
-        .then((res) => {
-          setProducts(res.data.products);
-        })
-        .catch((err) => console.log(err));
-    }
-    fetchProducts("woman");
-  }, []);
+function ProductDetails({ route }) {
+  const { productId } = route.params;
 
   return (
-    <View style={{ height: "100%", width: "100%" }}>
-      <FlatList
-        data={products}
-        renderItem={({ item: product }) => (
-          <Product
-            productName={product.name}
-            imageUrl={product.imageUrl}
-            price={product.price}
-            id={product._id}
-          />
-        )}
-      />
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>{productId}</Text>
     </View>
   );
 }
@@ -149,12 +210,24 @@ function Register({ route }) {
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  // const linking = {
+  //   config: {
+  //     screens: {
+  //       Products: {
+  //         screens: {
+  //           ProductDetails
+  //         },
+  //       },
+  //     },
+  //   },
+  // };
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Men" component={Men} />
-        <Stack.Screen name="Women" component={Women} />
+        <Stack.Screen name="Products" component={Products} />
+        <Stack.Screen name="ProductDetails" component={ProductDetails} />
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Orders" component={Orders} />
         <Stack.Screen name="Login" component={Login} />
@@ -163,10 +236,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-});
