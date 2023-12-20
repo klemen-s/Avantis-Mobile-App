@@ -1,4 +1,12 @@
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  FlatList,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  SectionList,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -50,84 +58,7 @@ function HomeScreen({ navigation }) {
   );
 }
 
-// function Men({ route }) {
-//   const [products, setProducts] = useState([]);
-//   const url = process.env.EXPO_PUBLIC_API_URL;
-
-//   useEffect(() => {
-//     function fetchProducts(gender) {
-//       axios({
-//         url: url + "get-products",
-//         params: { gender: gender },
-//       })
-//         .then((res) => {
-//           setProducts(res.data.products);
-//         })
-//         .catch((err) => console.log(err));
-//     }
-//     fetchProducts("male");
-//   }, []);
-
-//   return (
-//     <View style={{ height: "100%", width: "100%" }}>
-//       <FlatList
-//         data={products}
-//         renderItem={({ item: product }) => (
-//           <Product
-//             productName={product.name}
-//             imageUrl={product.imageUrl}
-//             price={product.price}
-//             id={product._id}
-//           />
-//         )}
-//       />
-//     </View>
-//   );
-// }
-
-// function Women({ route }) {
-//   const url = process.env.EXPO_PUBLIC_API_URL;
-
-//   const [products, setProducts] = useState([]);
-
-//   useEffect(() => {
-//     function fetchProducts(gender) {
-//       axios({
-//         url: url + "get-products",
-//         params: { gender: gender },
-//       })
-//         .then((res) => {
-//           setProducts(res.data.products);
-//         })
-//         .catch((err) => console.log(err));
-//     }
-//     fetchProducts("woman");
-//   }, []);
-
-//   return (
-//     <View style={{ height: "100%", width: "100%" }}>
-//       <FlatList
-//         data={products}
-//         renderItem={({ item: product }) => (
-//           <Product
-//             productName={product.name}
-//             imageUrl={product.imageUrl}
-//             price={product.price}
-//             id={product._id}
-//           />
-//         )}
-//       />
-//     </View>
-//   );
-// }
-
 function Products({ route, navigation }) {
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="ProductDetails" component={ProductDetails} />
-    </Stack.Navigator>
-  </NavigationContainer>;
-
   const { gender } = route.params;
 
   const url = process.env.EXPO_PUBLIC_API_URL;
@@ -168,11 +99,88 @@ function Products({ route, navigation }) {
 
 function ProductDetails({ route }) {
   const { productId } = route.params;
+  const url = process.env.EXPO_PUBLIC_API_URL + "get-product";
+
+  const [product, setProduct] = useState({});
+  const [sizes, setSizes] = useState([]);
+
+  useEffect(() => {
+    async function fetchProduct(productId) {
+      try {
+        const res = await axios({ url: url, params: { productId: productId } });
+        setProduct(res.data.product);
+        setSizes(res.data.product.sizes);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchProduct(productId);
+  }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>{productId}</Text>
-    </View>
+    <ScrollView styles={{ flex: 1, flexDirection: "column" }}>
+      <Image
+        style={{ width: "100%", height: 491, resizeMode: "contain" }}
+        source={{ uri: product.imageUrl }}
+      />
+      <View
+        style={{
+          marginTop: 20,
+          width: "100%",
+          height: 100,
+          flex: 1,
+          paddingHorizontal: 10,
+        }}
+      >
+        <Text style={{ fontSize: 17,marginBottom: 5, fontWeight : 500 }}>{product.name}</Text>
+        <Text style={{ fontSize: 17 }}>{product.price}</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            height: 200,
+            marginTop: 15,
+            columnGap: 20,
+            flexWrap: "wrap",
+          }}
+        >
+          {sizes.map((size, index) => {
+            return (
+              <TouchableOpacity style={{ width: 40, height: 40 }} key={index}>
+                <Text style={{ fontSize: 15 }}>{size}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 60,
+          marginBottom: 20,
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            borderColor: "black",
+            width: "100%",
+            height: 40,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "50%",
+          }}
+          onPress={() => {}}
+        >
+          <Text style={{ fontSize: 15 }}>Add To Cart</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -210,24 +218,16 @@ function Register({ route }) {
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  // const linking = {
-  //   config: {
-  //     screens: {
-  //       Products: {
-  //         screens: {
-  //           ProductDetails
-  //         },
-  //       },
-  //     },
-  //   },
-  // };
-
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Products" component={Products} />
-        <Stack.Screen name="ProductDetails" component={ProductDetails} />
+        <Stack.Screen
+          name="ProductDetails"
+          component={ProductDetails}
+          options={{ title: "" }}
+        />
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Orders" component={Orders} />
         <Stack.Screen name="Login" component={Login} />
