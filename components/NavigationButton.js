@@ -1,9 +1,20 @@
 import { Text, View, TouchableOpacity } from "react-native";
 
-export default function NavigationButton({ text, navigateTo, navigation }) {
+export default function NavigationButton({
+  text,
+  navigateTo,
+  navigation,
+  gender = "",
+  productId = "",
+}) {
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(navigateTo)}
+      onPress={() =>
+        navigation.navigate(navigateTo, {
+          gender: gender,
+          productId: productId,
+        })
+      }
       style={{
         backgroundColor: "white",
         width: 130,

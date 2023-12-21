@@ -1,27 +1,52 @@
-import { Image, Text, View } from "react-native";
+import { Button, Image, Text, View, TouchableOpacity } from "react-native";
 
-export default function Product({ productName, imageUrl, id, price }) {
+export default function Product({
+  productName,
+  imageUrl,
+  id,
+  price,
+  navigation,
+}) {
   return (
     <View
       style={{
         width: "100%",
         height: 500,
-        alignItems: "center",
-        justifyContent: "center",
-        marginVertical: 35,
+        marginVertical: 60,
       }}
     >
       <Image
         style={{ width: "100%", height: "100%", resizeMode: "contain" }}
         source={{ uri: imageUrl }}
       />
+      <TouchableOpacity
+        style={{
+          borderBottomWidth: 1,
+          borderColor: "black",
+          width: "100%",
+          height: 40,
+        }}
+        onPress={() => navigation.navigate("ProductDetails", { productId: id })}
+      >
+        <Text
+          style={{
+            width: "100%",
+            height: "100%",
+            fontSize: 20,
+            textAlign: "center",
+          }}
+        >
+          Details
+        </Text>
+      </TouchableOpacity>
       <View
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          flexDirection: "column",
           marginBottom: 10,
-          marginTop: 7
+          marginTop: 7,
         }}
       >
         <Text style={{ fontSize: 17, fontWeight: "400" }}>{productName}</Text>
