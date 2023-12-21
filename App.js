@@ -261,14 +261,61 @@ function ProductDetails({ route }) {
 function Cart({ route }) {
   const cart = useContext(CartContext);
 
+  const totalPrice = cart?.reduce((acc, cartItem) => {
+    return acc + cartItem.price * cartItem.quantity;
+  }, 0);
+
   return (
-    <FlatList
-      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      data={cart}
-      renderItem={({ item }) => <CartItem />}
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        paddingBottom: 20,
+      }}
     >
-      <Text>Cart Items</Text>
-    </FlatList>
+      <FlatList
+        contentContainerStyle={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        data={cart}
+        renderItem={({ item, index }) => (
+          <CartItem
+            imageUrl={item.imageUrl}
+            name={item.productName}
+            id={index}
+            price={item.price}
+            quantity={item.quantity}
+          />
+        )}
+      ></FlatList>
+      <Text
+        style={{
+          textAlign: "left",
+          width: 250,
+          marginVertical: 20,
+          fontSize: 18,
+          fontWeight: 500,
+        }}
+      >
+        Total: £{parseFloat(totalPrice).toFixed(2)}
+      </Text>
+      <TouchableOpacity
+        style={{
+          width: 250,
+          height: 40,
+          borderWidth: 1,
+          borderColor: "black",
+          marginTop: 10,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 19 }}>Order</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 

@@ -19,6 +19,7 @@ export function cartReducer(cart, action) {
         return newCart;
       }
 
+    //   console.log(newCart);
       if (cart) {
         return [...cart, { ...action.product }];
       } else {
