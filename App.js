@@ -9,10 +9,13 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useEffect, useState, useReducer, useContext } from "react";
 
 import Product from "./components/Product";
 import NavigationButton from "./components/NavigationButton";
-import { useEffect, useState } from "react";
+import { CartItem } from "./components/CartItem";
+import { CartDispatchContext, CartContext } from "./context/CartContext";
+import { cartReducer } from "./reducers/cartReducer";
 
 import axios from "axios";
 
@@ -103,8 +106,26 @@ function ProductDetails({ route }) {
 
   const [product, setProduct] = useState({});
   const [sizes, setSizes] = useState([]);
-  const [click, setClick] = useState(false);
   const [selectSize, setSelectSize] = useState("");
+
+  const cartDispatch = useContext(CartDispatchContext);
+
+  const addToCartHandler = () => {
+    if (selectSize !== undefined) {
+      const price = product.price.slice(1);
+      cartDispatch({
+        type: "added",
+        product: {
+          productName: product.name,
+          size: selectSize,
+          quantity: 1,
+          imageUrl: product.imageUrl,
+          price: parseFloat(price).toFixed(2),
+          id: product._id,
+        },
+      });
+    }
+  };
 
   const styles = StyleSheet.create({
     container: {
@@ -193,9 +214,7 @@ function ProductDetails({ route }) {
                   selectSize == size ? styles.sizeBtnClicked : styles.sizeBtn
                 }
                 key={index}
-                onPress={() => {
-                  setSelectSize(size);
-                }}
+                onPress={() => setSelectSize(size)}
               >
                 <Text
                   style={
@@ -228,7 +247,10 @@ function ProductDetails({ route }) {
           marginBottom: 20,
         }}
       >
-        <TouchableOpacity style={styles.btnNormal}>
+        <TouchableOpacity
+          style={styles.btnNormal}
+          onPress={() => addToCartHandler()}
+        >
           <Text style={{ fontSize: 15 }}>Add To Cart</Text>
         </TouchableOpacity>
       </View>
@@ -237,10 +259,16 @@ function ProductDetails({ route }) {
 }
 
 function Cart({ route }) {
+  const cart = useContext(CartContext);
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <FlatList
+      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+      data={cart}
+      renderItem={({ item }) => <CartItem />}
+    >
       <Text>Cart Items</Text>
-    </View>
+    </FlatList>
   );
 }
 
@@ -270,21 +298,27 @@ function Register({ route }) {
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [cart, dispatchCart] = useReducer(cartReducer, []);
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Products" component={Products} />
-        <Stack.Screen
-          name="ProductDetails"
-          component={ProductDetails}
-          options={{ title: "" }}
-        />
-        <Stack.Screen name="Cart" component={Cart} />
-        <Stack.Screen name="Orders" component={Orders} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <CartContext.Provider value={cart}>
+      <CartDispatchContext.Provider value={dispatchCart}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="home">
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Products" component={Products} />
+            <Stack.Screen
+              name="ProductDetails"
+              component={ProductDetails}
+              options={{ title: "" }}
+            />
+            <Stack.Screen name="Cart" component={Cart} />
+            <Stack.Screen name="Orders" component={Orders} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </CartDispatchContext.Provider>
+    </CartContext.Provider>
   );
 }
