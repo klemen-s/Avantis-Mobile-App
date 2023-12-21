@@ -5,7 +5,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  SectionList,
+  StyleSheet,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -103,6 +103,44 @@ function ProductDetails({ route }) {
 
   const [product, setProduct] = useState({});
   const [sizes, setSizes] = useState([]);
+  const [click, setClick] = useState(false);
+  const [selectSize, setSelectSize] = useState("");
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 24,
+      backgroundColor: "#eaeaea",
+    },
+    btnNormal: {
+      borderWidth: 1,
+      borderColor: "black",
+      width: "100%",
+      height: 40,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "50%",
+    },
+    sizeBtn: {
+      width: 40,
+      height: 40,
+      backgroundColor: "#f2f2f2",
+      fontSize: 15,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    sizeBtnClicked: {
+      width: 40,
+      height: 40,
+      backgroundColor: "black",
+      fontSize: 15,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  });
 
   useEffect(() => {
     async function fetchProduct(productId) {
@@ -133,7 +171,9 @@ function ProductDetails({ route }) {
           paddingHorizontal: 10,
         }}
       >
-        <Text style={{ fontSize: 17,marginBottom: 5, fontWeight : 500 }}>{product.name}</Text>
+        <Text style={{ fontSize: 17, marginBottom: 5, fontWeight: 500 }}>
+          {product.name}
+        </Text>
         <Text style={{ fontSize: 17 }}>{product.price}</Text>
         <View
           style={{
@@ -148,8 +188,32 @@ function ProductDetails({ route }) {
         >
           {sizes.map((size, index) => {
             return (
-              <TouchableOpacity style={{ width: 40, height: 40 }} key={index}>
-                <Text style={{ fontSize: 15 }}>{size}</Text>
+              <TouchableOpacity
+                style={
+                  selectSize == size ? styles.sizeBtnClicked : styles.sizeBtn
+                }
+                key={index}
+                onPress={() => {
+                  setSelectSize(size);
+                }}
+              >
+                <Text
+                  style={
+                    selectSize == size
+                      ? {
+                          color: "white",
+                          textAlignVertical: "center",
+                          textAlign: "center",
+                        }
+                      : {
+                          color: "black",
+                          textAlignVertical: "center",
+                          textAlign: "center",
+                        }
+                  }
+                >
+                  {size}
+                </Text>
               </TouchableOpacity>
             );
           })}
@@ -164,19 +228,7 @@ function ProductDetails({ route }) {
           marginBottom: 20,
         }}
       >
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: "black",
-            width: "100%",
-            height: 40,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "50%",
-          }}
-          onPress={() => {}}
-        >
+        <TouchableOpacity style={styles.btnNormal}>
           <Text style={{ fontSize: 15 }}>Add To Cart</Text>
         </TouchableOpacity>
       </View>
