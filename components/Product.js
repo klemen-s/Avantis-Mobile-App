@@ -16,15 +16,18 @@ export default function Product({
       }}
     >
       <Image
-        style={{ width: "100%", height: "100%", resizeMode: "contain" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          resizeMode: "contain",
+        }}
         source={{ uri: imageUrl }}
       />
       <TouchableOpacity
         style={{
-          borderBottomWidth: 1,
-          borderColor: "black",
           width: "100%",
-          height: 40,
+          height: 30,
+          paddingTop: 3,
         }}
         onPress={() => navigation.navigate("ProductDetails", { productId: id })}
       >
@@ -46,7 +49,7 @@ export default function Product({
           alignItems: "center",
           flexDirection: "column",
           marginBottom: 10,
-          marginTop: 7,
+          marginTop: 9,
         }}
       >
         <Text style={{ fontSize: 17, fontWeight: "400" }}>{productName}</Text>
