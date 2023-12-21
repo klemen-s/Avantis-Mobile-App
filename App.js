@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Product from "./components/Product";
-import NavigationButton from "./components/Button";
+import NavigationButton from "./components/NavigationButton";
 
 function HomeScreen({ navigation }) {
   return (
