@@ -280,13 +280,15 @@ function Cart({ route }) {
           alignItems: "center",
         }}
         data={cart}
+        keyExtractor={(item, index) => index}
         renderItem={({ item, index }) => (
           <CartItem
             imageUrl={item.imageUrl}
             name={item.productName}
-            id={index}
             price={item.price}
             quantity={item.quantity}
+            size={item.size}
+            id={item.id}
           />
         )}
       ></FlatList>

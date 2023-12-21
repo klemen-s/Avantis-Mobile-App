@@ -1,9 +1,16 @@
-import { Image, View, Text } from "react-native";
+import { useContext } from "react";
+import { Image, View, Text, TouchableOpacity } from "react-native";
+import { CartDispatchContext } from "../context/CartContext";
 
-export function CartItem({ name, price, id, imageUrl, quantity }) {
+export function CartItem({ name, price, id, imageUrl, quantity, size }) {
+  const cartDispatch = useContext(CartDispatchContext);
+
+  function removeItem() {
+    cartDispatch({ type: "removed", product: { id: id, size: size } });
+  }
+
   return (
     <View
-      key={id}
       style={{
         display: "flex",
         justifyContent: "center",
@@ -28,6 +35,10 @@ export function CartItem({ name, price, id, imageUrl, quantity }) {
         <Text style={{ fontWeight: 500 }}>{name}</Text>
         <Text>Price: £{price}</Text>
         <Text>Quantity: {quantity}</Text>
+        <Text>Size: {size}</Text>
+        <TouchableOpacity onPress={() => removeItem()}>
+          <Text>Remove Item</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
