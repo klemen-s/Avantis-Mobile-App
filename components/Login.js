@@ -1,43 +1,47 @@
-import { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { useContext, useState } from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import axios from "axios";
+import { AuthDispatchContext } from "../context/AuthContext";
 
-export function Register() {
-  const [name, onChangeName] = useState("");
+export function Login() {
+  const url = process.env.EXPO_PUBLIC_API_URL + "login";
+
   const [email, onChangeEmail] = useState("");
   const [password, onChangePassword] = useState("");
-  const [confirmPassword, onChangeConfirmPassword] = useState("");
 
-  const url = process.env.EXPO_PUBLIC_API_URL + "register";
+  const [isEmailCorrect, setIsEmailCorrect] = useState(true);
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);
 
-  async function handleRegister() {
+  const authDispatch = useContext(AuthDispatchContext);
+
+  async function handleLogin() {
     try {
-      const data = await axios({
-        url: url,
+      const res = await axios({
+        method: "POST",
         data: {
           email: email,
-          name: name,
           password: password,
-          confirmPassword,
-          confirmPassword,
         },
-        method: "POST",
+        url: url,
       });
+
+      const { jwt, userId } = res.data;
+      authDispatch({ type: "SIGN_IN", action: { jwt, userId } });
     } catch (error) {
       console.log(error);
+      setIsEmailCorrect(false);
+      setIsPasswordCorrect(false);
     }
   }
 
   return (
     <View style={style.container}>
-      <TextInput
-        numberOfLines={1}
-        maxLength={40}
-        onChangeText={(text) => onChangeName(text)}
-        value={name}
-        style={style.input}
-        placeholder="Name"
-      />
       <TextInput
         numberOfLines={1}
         maxLength={40}
@@ -55,23 +59,12 @@ export function Register() {
         placeholder="Password"
         secureTextEntry={true}
       />
-      <TextInput
-        numberOfLines={1}
-        maxLength={40}
-        onChangeText={(text) => onChangeConfirmPassword(text)}
-        value={confirmPassword}
-        style={style.input}
-        placeholder="Confirm Password"
-        secureTextEntry={true}
-      />
-
-      <TouchableOpacity onPress={handleRegister}>
-        <Text>Register</Text>
+      <TouchableOpacity onPress={handleLogin}>
+        <Text>Login</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
 const style = StyleSheet.create({
   input: {
     height: 50,

@@ -25,7 +25,7 @@ export function ProductDetails({ route }) {
     if (selectSize !== undefined) {
       const price = product.price.slice(1);
       cartDispatch({
-        type: "added",
+        type: "ADD",
         product: {
           productName: product.name,
           size: selectSize,

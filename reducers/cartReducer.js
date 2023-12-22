@@ -1,6 +1,6 @@
 export function cartReducer(cart, action) {
   switch (action.type) {
-    case "added": {
+    case "ADD": {
       let duplicatedItem = false;
 
       const newCart = cart?.map((cartItem) => {
@@ -19,14 +19,13 @@ export function cartReducer(cart, action) {
         return newCart;
       }
 
-    //   console.log(newCart);
       if (cart) {
         return [...cart, { ...action.product }];
       } else {
         return [];
       }
     }
-    case "removed": {
+    case "REMOVE": {
       const removeItemIndex = cart.findIndex(
         (cartItem) =>
           cartItem.id === action.product.id &&
@@ -37,7 +36,7 @@ export function cartReducer(cart, action) {
 
       return [...cart];
     }
-    case "checkout": {
+    case "CHECKOUT": {
       return [];
     }
     default: {

@@ -6,7 +6,7 @@ export function CartItem({ name, price, id, imageUrl, quantity, size }) {
   const cartDispatch = useContext(CartDispatchContext);
 
   function handleRemoveItem() {
-    cartDispatch({ type: "removed", product: { id: id, size: size } });
+    cartDispatch({ type: "REMOVE", product: { id: id, size: size } });
   }
 
   return (

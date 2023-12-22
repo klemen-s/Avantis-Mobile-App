@@ -1,33 +1,28 @@
-export function authReducer(user, action) {
+import { setItemAsync } from "expo-secure-store";
+
+export function authReducer(state, action) {
   switch (action.type) {
-    case "login": {
-      if (!localStorage.getItem("jwt")) {
-        user.isLoggedIn = false;
-        return;
-      }
-      user.name = action.name;
-      user.userId = action.userId;
+    case "RESTORE_TOKEN": {
+      return { ...state, userToken: action.token, isLoading: false };
+    }
+    case "SIGN_IN": {
+      setItemAsync("userToken", action.action.jwt);
+      setItemAsync("userId", action.action.userId);
 
-      return user;
+      return {
+        ...state,
+        isSignout: false,
+        userToken: action.token,
+        userId: action.userId,
+      };
     }
-    case "logout": {
-      localStorage.removeItem("jwt");
-      localStorage.removeItem("name");
-      localStorage.removeItem("userId");
-
-      user.isLoggedIn = false;
-      user.name = "";
-      user.userId = "";
-      return user;
-    }
-    case "checkLogin": {
-      if (localStorage.getItem("jwt") && localStorage.getItem("name")) {
-        user.isLoggedIn = true;
-        user.name = localStorage.getItem("name");
-        user.userId = localStorage.getItem("userId");
-      }
-      return user;
-    }
+    case "SIGN_OUT":
+      return {
+        ...state,
+        isSignout: true,
+        userToken: null,
+        userId: null,
+      };
     default: {
       throw Error("Unknown action: " + action.type);
     }

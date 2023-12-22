@@ -3,7 +3,7 @@ import { CartItem } from "./CartItem";
 import { CartContext } from "../context/CartContext";
 import { useContext } from "react";
 
-export function Cart({ route }) {
+export function Cart() {
   const cart = useContext(CartContext);
 
   const totalPrice = cart?.reduce((acc, cartItem) => {
