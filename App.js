@@ -124,6 +124,8 @@ function ProductDetails({ route }) {
           id: product._id,
         },
       });
+
+      setSelectSize(undefined);
     }
   };
 
