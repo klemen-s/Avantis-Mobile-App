@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useContext } from "react";
 import { getItemAsync } from "expo-secure-store";
 
 import { HomeScreen } from "./components/HomeScreen";
@@ -36,11 +36,10 @@ export default function App() {
       try {
         userToken = await getItemAsync("userToken");
         userId = await getItemAsync("userId");
+        dispatchAuth({ type: "RESTORE_TOKEN", token: userToken });
       } catch (error) {
         userToken = null;
       }
-
-      dispatchAuth({ type: "RESTORE_TOKEN", token: userToken });
     }
 
     fetchUserStorageToken();
@@ -53,8 +52,21 @@ export default function App() {
           <CartDispatchContext.Provider value={dispatchCart}>
             <NavigationContainer>
               <Stack.Navigator initialRouteName="Home">
-                {auth.isSignout ? (
-                  <>
+                <>
+                  {auth.userToken == null ? (
+                    <>
+                      <Stack.Screen name="Login" component={Login} />
+                      <Stack.Screen name="Register" component={Register} />
+                    </>
+                  ) : (
+                    <>
+                      <Stack.Screen name="Cart" component={Cart} />
+                      <Stack.Screen name="Orders" component={Orders} />
+                    </>
+                  )}
+                  <Stack.Group
+                    navigationKey={!auth.isSignout ? "user" : "guest"}
+                  >
                     <Stack.Screen name="Home" component={HomeScreen} />
                     <Stack.Screen name="Products" component={Products} />
                     <Stack.Screen
@@ -62,23 +74,8 @@ export default function App() {
                       component={ProductDetails}
                       options={{ title: "" }}
                     />
-                    <Stack.Screen name="Login" component={Login} />
-                    <Stack.Screen name="Register" component={Register} />
-                    <Stack.Screen name="Cart" component={Cart} />
-                  </>
-                ) : (
-                  <>
-                    <Stack.Screen name="Home" component={HomeScreen} />
-                    <Stack.Screen name="Products" component={Products} />
-                    <Stack.Screen
-                      name="ProductDetails"
-                      component={ProductDetails}
-                      options={{ title: "" }}
-                    />
-                    <Stack.Screen name="Cart" component={Cart} />
-                    <Stack.Screen name="Orders" component={Orders} />
-                  </>
-                )}
+                  </Stack.Group>
+                </>
               </Stack.Navigator>
             </NavigationContainer>
           </CartDispatchContext.Provider>

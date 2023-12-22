@@ -1,7 +1,5 @@
 import { Text, View, Image, FlatList } from "react-native";
 export function OrderItem({ order }) {
-  console.log(order.orderItems);
-
   return (
     <View style={{ marginVertical: 30, minHeight: 150 }}>
       <Text style={{ marginBottom: 10, fontWeight: 500 }}>

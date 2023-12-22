@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { AuthDispatchContext } from "../context/AuthContext";
+import { setItemAsync } from "expo-secure-store";
 
 export function Login({ navigation }) {
   const url = process.env.EXPO_PUBLIC_API_URL + "login";
@@ -15,8 +16,8 @@ export function Login({ navigation }) {
   const [email, onChangeEmail] = useState("");
   const [password, onChangePassword] = useState("");
 
-  const [isEmailCorrect, setIsEmailCorrect] = useState(true);
-  const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const authDispatch = useContext(AuthDispatchContext);
 
@@ -32,12 +33,15 @@ export function Login({ navigation }) {
       });
 
       const { jwt, userId } = res.data;
+
+      await setItemAsync("userToken", jwt);
+      await setItemAsync("userId", userId);
+
       authDispatch({ type: "SIGN_IN", data: { jwt, userId } });
       navigation.navigate("Home");
     } catch (error) {
-      console.log(error);
-      setIsEmailCorrect(false);
-      setIsPasswordCorrect(false);
+      setError(true);
+      setErrorMessage("Email or password is wrong. Please try again.");
     }
   }
 
@@ -60,9 +64,25 @@ export function Login({ navigation }) {
         placeholder="Password"
         secureTextEntry={true}
       />
-      <TouchableOpacity onPress={handleLogin}>
-        <Text>Login</Text>
+      <TouchableOpacity
+        style={{
+          borderWidth: 1,
+          borderColor: "black",
+          width: 90,
+          height: 40,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onPress={handleLogin}
+      >
+        <Text style={{ fontSize: 16 }}>Login</Text>
       </TouchableOpacity>
+      {error ? (
+        <Text style={{ color: "red", marginTop: 20 }}>{errorMessage}</Text>
+      ) : (
+        ""
+      )}
     </View>
   );
 }

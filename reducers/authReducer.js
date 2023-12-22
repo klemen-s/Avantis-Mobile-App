@@ -1,4 +1,4 @@
-import { setItemAsync } from "expo-secure-store";
+import { setItemAsync, deleteItemAsync } from "expo-secure-store";
 
 export function authReducer(state, action) {
   switch (action.type) {
@@ -6,14 +6,11 @@ export function authReducer(state, action) {
       return { ...state, userToken: action.token, isLoading: false };
     }
     case "SIGN_IN": {
-      setItemAsync("userToken", action.data.jwt);
-      setItemAsync("userId", action.data.userId);
-
       return {
         ...state,
         isSignout: false,
-        userToken: action.token,
-        userId: action.userId,
+        userToken: action.data.jwt,
+        userId: action.data.userId,
       };
     }
     case "SIGN_OUT":

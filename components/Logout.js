@@ -1,12 +1,19 @@
 import { useContext } from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { AuthDispatchContext } from "../context/AuthContext";
+import { deleteItemAsync } from "expo-secure-store";
 
 export function Logout() {
   const authDispatch = useContext(AuthDispatchContext);
 
-  function handleLogout() {
-    authDispatch({ type: "SIGN_OUT" });
+  async function handleLogout() {
+    try {
+      await deleteItemAsync("userId");
+      await deleteItemAsync("userToken");
+      authDispatch({ type: "SIGN_OUT" });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

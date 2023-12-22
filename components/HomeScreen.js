@@ -21,7 +21,7 @@ export function HomeScreen({ navigation }) {
         justifyContent: "center",
       }}
     >
-      {auth.isSignout ? (
+      {auth.userToken == null ? (
         <>
           <NavigationButton
             navigation={navigation}
@@ -44,11 +44,6 @@ export function HomeScreen({ navigation }) {
             navigation={navigation}
             navigateTo="Register"
             text="Register"
-          />
-          <NavigationButton
-            navigation={navigation}
-            navigateTo="Cart"
-            text={cartTitle}
           />
         </>
       ) : (
