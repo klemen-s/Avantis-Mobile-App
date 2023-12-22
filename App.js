@@ -10,19 +10,12 @@ import { ProductDetails } from "./components/ProductDetails";
 import { Cart } from "./components/Cart";
 import { Register } from "./components/Register";
 import { Login } from "./components/Login";
+import { Orders } from "./components/Orders";
 
 import { CartDispatchContext, CartContext } from "./context/CartContext";
 import { AuthContext, AuthDispatchContext } from "./context/AuthContext";
 import { cartReducer } from "./reducers/cartReducer";
 import { authReducer } from "./reducers/authReducer";
-
-function Orders({ route }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Your orders</Text>
-    </View>
-  );
-}
 
 const Stack = createNativeStackNavigator();
 
@@ -60,7 +53,7 @@ export default function App() {
           <CartDispatchContext.Provider value={dispatchCart}>
             <NavigationContainer>
               <Stack.Navigator initialRouteName="Home">
-                {auth.isSignout == true ? (
+                {auth.isSignout ? (
                   <>
                     <Stack.Screen name="Home" component={HomeScreen} />
                     <Stack.Screen name="Products" component={Products} />

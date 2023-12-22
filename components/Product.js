@@ -1,4 +1,4 @@
-import { Button, Image, Text, View, TouchableOpacity } from "react-native";
+import {  Image, Text, View, TouchableOpacity } from "react-native";
 
 export default function Product({
   productName,

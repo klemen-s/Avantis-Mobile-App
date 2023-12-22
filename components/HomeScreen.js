@@ -21,7 +21,7 @@ export function HomeScreen({ navigation }) {
         justifyContent: "center",
       }}
     >
-      {auth.isSignout == true ? (
+      {auth.isSignout ? (
         <>
           <NavigationButton
             navigation={navigation}

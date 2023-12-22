@@ -26,7 +26,7 @@ export function Cart() {
         }}
         data={cart}
         keyExtractor={(item, index) => index}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <CartItem
             imageUrl={item.imageUrl}
             name={item.productName}

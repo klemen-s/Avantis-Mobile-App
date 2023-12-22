@@ -33,9 +33,9 @@ export function CartItem({ name, price, id, imageUrl, quantity, size }) {
         }}
       >
         <Text style={{ fontWeight: 500 }}>{name}</Text>
-        <Text>Price: £{price}</Text>
-        <Text>Quantity: {quantity}</Text>
         <Text>Size: {size}</Text>
+        <Text>Quantity: {quantity}</Text>
+        <Text>Price: £{price}</Text>
         <TouchableOpacity
           style={{
             width: "100%",
