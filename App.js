@@ -60,7 +60,7 @@ export default function App() {
           <CartDispatchContext.Provider value={dispatchCart}>
             <NavigationContainer>
               <Stack.Navigator initialRouteName="Home">
-                {auth.userToken == null ? (
+                {auth.isSignout == true ? (
                   <>
                     <Stack.Screen name="Home" component={HomeScreen} />
                     <Stack.Screen name="Products" component={Products} />

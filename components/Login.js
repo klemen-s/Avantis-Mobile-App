@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { AuthDispatchContext } from "../context/AuthContext";
 
-export function Login() {
+export function Login({ navigation }) {
   const url = process.env.EXPO_PUBLIC_API_URL + "login";
 
   const [email, onChangeEmail] = useState("");
@@ -32,7 +32,8 @@ export function Login() {
       });
 
       const { jwt, userId } = res.data;
-      authDispatch({ type: "SIGN_IN", action: { jwt, userId } });
+      authDispatch({ type: "SIGN_IN", data: { jwt, userId } });
+      navigation.navigate("Home");
     } catch (error) {
       console.log(error);
       setIsEmailCorrect(false);

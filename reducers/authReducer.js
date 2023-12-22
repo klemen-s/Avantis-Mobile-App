@@ -6,8 +6,8 @@ export function authReducer(state, action) {
       return { ...state, userToken: action.token, isLoading: false };
     }
     case "SIGN_IN": {
-      setItemAsync("userToken", action.action.jwt);
-      setItemAsync("userId", action.action.userId);
+      setItemAsync("userToken", action.data.jwt);
+      setItemAsync("userId", action.data.userId);
 
       return {
         ...state,

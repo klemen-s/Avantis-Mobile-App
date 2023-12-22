@@ -3,6 +3,7 @@ import NavigationButton from "./NavigationButton";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
+import { Logout } from "./Logout";
 
 export function HomeScreen({ navigation }) {
   const cart = useContext(CartContext);
@@ -20,7 +21,7 @@ export function HomeScreen({ navigation }) {
         justifyContent: "center",
       }}
     >
-      {auth.userToken == null ? (
+      {auth.isSignout == true ? (
         <>
           <NavigationButton
             navigation={navigation}
@@ -74,6 +75,7 @@ export function HomeScreen({ navigation }) {
             navigateTo="Orders"
             text="Orders"
           />
+          <Logout />
         </>
       )}
     </View>
