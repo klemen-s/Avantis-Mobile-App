@@ -21,7 +21,7 @@ export function ProductDetails({ route }) {
 
   const cartDispatch = useContext(CartDispatchContext);
 
-  const addToCartHandler = () => {
+  const handleCart = () => {
     if (selectSize !== undefined) {
       const price = product.price.slice(1);
       cartDispatch({
@@ -160,10 +160,7 @@ export function ProductDetails({ route }) {
           marginBottom: 20,
         }}
       >
-        <TouchableOpacity
-          style={styles.btnNormal}
-          onPress={() => addToCartHandler()}
-        >
+        <TouchableOpacity style={styles.btnNormal} onPress={handleCart}>
           <Text style={{ fontSize: 15 }}>Add To Cart</Text>
         </TouchableOpacity>
       </View>

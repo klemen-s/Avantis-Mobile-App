@@ -5,7 +5,7 @@ import { CartDispatchContext } from "../context/CartContext";
 export function CartItem({ name, price, id, imageUrl, quantity, size }) {
   const cartDispatch = useContext(CartDispatchContext);
 
-  function removeItem() {
+  function handleRemoveItem() {
     cartDispatch({ type: "removed", product: { id: id, size: size } });
   }
 
@@ -47,7 +47,7 @@ export function CartItem({ name, price, id, imageUrl, quantity, size }) {
             justifyContent: "center",
             alignItems: "center",
           }}
-          onPress={() => removeItem()}
+          onPress={handleRemoveItem}
         >
           <Text>Remove Item</Text>
         </TouchableOpacity>
