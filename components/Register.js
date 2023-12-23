@@ -62,7 +62,7 @@ export function Register({ navigation }) {
       });
 
       console.log(data);
-      navigation.navigate("Home");
+      navigation.navigate("Login");
     } catch (err) {
       console.log(err);
 
@@ -155,7 +155,18 @@ export function Register({ navigation }) {
         secureTextEntry={true}
       />
 
-      <TouchableOpacity onPress={handleRegister}>
+      <TouchableOpacity
+        onPress={handleRegister}
+        style={{
+          borderWidth: 1,
+          borderColor: "black",
+          width: 90,
+          height: 40,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Text>Register</Text>
       </TouchableOpacity>
     </View>
