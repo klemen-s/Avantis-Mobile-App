@@ -1,4 +1,4 @@
-# 🛍️ E-Commerce Store (Avantis Mobile Application) 
+# 🛍️ Avantis Mobile Application
 
 A mobile application built with React Native that enables users to enjoy online shopping features such as user authentication, product browsing, cart management, order placement, and viewing order history.
 
