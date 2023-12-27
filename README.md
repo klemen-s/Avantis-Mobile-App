@@ -28,8 +28,8 @@ Ensure you have the following installed:
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/klemen-s/Ecommerce-Store-React-Native.git`
-2. Navigate to the project directory: `cd Ecommerce-Store-React-Native`
+1. Clone the repository: `git clone https://github.com/klemen-s/Avantis-Mobile-App.git`
+2. Navigate to the project directory: `cd Avantis-Mobile-App`
 3. Install dependencies: `npm install` or `yarn install`
 
 ### Running the App
