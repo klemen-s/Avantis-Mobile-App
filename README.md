@@ -1,4 +1,4 @@
-# 🛍️ E-Commerce Store (Mobile Application) 
+# 🛍️ E-Commerce Store (Avantis Mobile Application) 
 
 A mobile application built with React Native that enables users to enjoy online shopping features such as user authentication, product browsing, cart management, order placement, and viewing order history.
 
@@ -12,7 +12,7 @@ A mobile application built with React Native that enables users to enjoy online 
 
 ## 📱 Technology Used
 
-- React Native
+![Static Badge](https://img.shields.io/badge/React--Native-61DBFB?style=for-the-badge&logo=React&labelColor=black)
 
 ## 🏁 Getting Started
 
@@ -20,8 +20,11 @@ A mobile application built with React Native that enables users to enjoy online 
 
 Ensure you have the following installed:
 
-- Node.js
-- npm or Yarn
+![Node.js Badge](https://img.shields.io/badge/Node.js-393?logo=nodedotjs&logoColor=fff&style=for-the-badge)
+
+![npm Badge](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=fff&style=for-the-badge)
+![Yarn Badge](https://img.shields.io/badge/Yarn-2C8EBB?logo=yarn&logoColor=fff&style=for-the-badge)
+
 
 ### Installation
 
@@ -41,3 +44,7 @@ Ensure you have the following installed:
 3. Review and manage items in your cart.
 4. Place orders for selected items.
 5. View order history to track previous purchases.
+
+## Other repositories
+### [Avantis](https://github.com/klemen-s/Avantis.git)
+### [Avantis Backend](https://github.com/klemen-s/Avantis-BE.git)
